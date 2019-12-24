@@ -8,13 +8,13 @@
 
 import UIKit
 
-class GridScrollView : UIScrollView, UIScrollViewDelegate {
+class GridScrollView: UIScrollView, UIScrollViewDelegate {
     
-    @IBInspectable var gridColor : UIColor = .white
+    @IBInspectable var gridColor: UIColor = .white
     
-    let gridStep : CGFloat = 4.0
-    let zoomConstraint : CGFloat = 100.0
-    let alphaThreshold : CGFloat = 0.05
+    let gridStep: CGFloat = 4.0
+    let zoomConstraint: CGFloat = 100.0
+    let alphaThreshold: CGFloat = 0.05
     
     convenience init() {
         self.init(frame: .zero)
@@ -37,15 +37,15 @@ class GridScrollView : UIScrollView, UIScrollViewDelegate {
     
     override func draw(_ rect: CGRect) {
         
-        let context : CGContext = UIGraphicsGetCurrentContext()!
+        let context = UIGraphicsGetCurrentContext()!
         backgroundColor?.setFill()
         context.fill(rect)
         
-        let phase : CGFloat = 10.0
+        let phase: CGFloat = 10.0
 
         //https://www.wolframalpha.com/input/?i=plot(x%2Fpow(2,floor(log(2,x))))x%3D0to16
         
-        let scaleFactor1 = zoomScale / pow(zoomConstraint,floor(logC(zoomScale, forBase: zoomConstraint)))
+        let scaleFactor1 = zoomScale / pow(zoomConstraint, floor(logC(zoomScale, forBase: zoomConstraint)))
         let scaleFactor2 = (zoomScale * phase) / pow(zoomConstraint, floor(logC((zoomScale * phase), forBase: zoomConstraint)))
 
         let scaledGridPeriod1 = gridStep * scaleFactor1
@@ -103,7 +103,7 @@ class GridScrollView : UIScrollView, UIScrollViewDelegate {
     // MARK: - Utility
     
     func logC(_ val: CGFloat, forBase base: CGFloat) -> CGFloat {
-        return log(val)/log(base)
+        return log(val) / log(base)
     }
 }
 
