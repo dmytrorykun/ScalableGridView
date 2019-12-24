@@ -1,40 +1,60 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="BYZ-38-t0r">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Scalable_Grid_View" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="dms-Ha-1cJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="kM9-AJ-VTV"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" maximumZoomScale="1000" id="ops-Cl-bYM" customClass="GridScrollView" customModule="Scalable_Grid_View" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" alwaysBounceHorizontal="YES" maximumZoomScale="1000" translatesAutoresizingMaskIntoConstraints="NO" id="ops-Cl-bYM" customClass="GridScrollView" customModule="Scalable_Grid_View" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" id="o6W-GY-CuK">
-                                        <rect key="frame" x="0.0" y="0.0" width="4000" height="4000"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o6W-GY-CuK">
+                                        <rect key="frame" x="0.0" y="0.0" width="2000" height="2000"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" id="3uw-SN-ej8">
-                                                <rect key="frame" x="84" y="250" width="240" height="128"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3uw-SN-ej8" userLabel="BlueView">
+                                                <rect key="frame" x="880" y="936" width="240" height="128"/>
+                                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="128" id="CK9-IE-zXA"/>
+                                                    <constraint firstAttribute="width" constant="240" id="M7V-VC-M15"/>
+                                                </constraints>
                                             </view>
                                         </subviews>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <gestureRecognizers/>
+                                        <constraints>
+                                            <constraint firstItem="3uw-SN-ej8" firstAttribute="centerX" secondItem="o6W-GY-CuK" secondAttribute="centerX" id="U5h-bZ-O9C"/>
+                                            <constraint firstAttribute="width" constant="2000" id="bdF-uz-bDg"/>
+                                            <constraint firstItem="3uw-SN-ej8" firstAttribute="centerY" secondItem="o6W-GY-CuK" secondAttribute="centerY" id="cuJ-rO-1in"/>
+                                            <constraint firstAttribute="height" constant="2000" id="kc8-u1-W7C"/>
+                                        </constraints>
                                     </view>
                                 </subviews>
                                 <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstItem="o6W-GY-CuK" firstAttribute="height" secondItem="InL-r5-JO4" secondAttribute="height" id="1R2-Dy-FVr"/>
+                                    <constraint firstItem="o6W-GY-CuK" firstAttribute="centerY" secondItem="InL-r5-JO4" secondAttribute="centerY" id="BY8-vd-jDh"/>
+                                    <constraint firstItem="o6W-GY-CuK" firstAttribute="width" secondItem="InL-r5-JO4" secondAttribute="width" id="o8J-oG-Dtl"/>
+                                    <constraint firstItem="o6W-GY-CuK" firstAttribute="centerX" secondItem="InL-r5-JO4" secondAttribute="centerX" id="ula-Xl-zkU"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="InL-r5-JO4"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="TjU-FU-ZeY"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="gridColor">
-                                        <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
@@ -42,8 +62,14 @@
                                 </connections>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="ops-Cl-bYM" secondAttribute="trailing" id="23N-TV-dfQ"/>
+                            <constraint firstItem="kM9-AJ-VTV" firstAttribute="top" secondItem="ops-Cl-bYM" secondAttribute="bottom" id="Jhe-LV-1v8"/>
+                            <constraint firstItem="ops-Cl-bYM" firstAttribute="top" secondItem="dms-Ha-1cJ" secondAttribute="bottom" id="raj-MY-GnH"/>
+                            <constraint firstItem="ops-Cl-bYM" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="w8p-kT-2pT"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="contentView" destination="o6W-GY-CuK" id="Lbe-Zz-r6o"/>
@@ -52,7 +78,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="47" y="414"/>
+            <point key="canvasLocation" x="68.115942028985515" y="277.23214285714283"/>
         </scene>
     </scenes>
 </document>

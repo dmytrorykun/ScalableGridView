@@ -15,21 +15,20 @@ class ViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.scrollView.contentSize = self.contentView.frame.size
     }
     
     // MARK: - UIScrollViewDelegate
     
-//    func scrollViewDidScroll(scrollView: UIScrollView) {
-//        scrollView.setNeedsDisplay()
-//    }
-//    
-//    func scrollViewDidZoom(scrollView: UIScrollView) {
-//        scrollView.setNeedsDisplay()
-//    }
-    
-    func viewForZoomingInScrollView(scrollView: UIScrollView) -> UIView? {
-        return contentView
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollView.setNeedsDisplay()
+    }
+
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        scrollView.setNeedsDisplay()
+    }
+
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        contentView
     }
 }
 

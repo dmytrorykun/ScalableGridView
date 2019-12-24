@@ -10,14 +10,14 @@ import UIKit
 
 class GridScrollView : UIScrollView, UIScrollViewDelegate {
     
-    @IBInspectable var gridColor : UIColor = UIColor.whiteColor()
+    @IBInspectable var gridColor : UIColor = .white
     
     let gridStep : CGFloat = 4.0
     let zoomConstraint : CGFloat = 100.0
-    let alphaTreshold : CGFloat = 0.05
+    let alphaThreshold : CGFloat = 0.05
     
     convenience init() {
-        self.init(frame: CGRectZero)
+        self.init(frame: .zero)
     }
     
     override init(frame: CGRect) {
@@ -31,15 +31,15 @@ class GridScrollView : UIScrollView, UIScrollViewDelegate {
     }
     
     func setUp() {
-        panGestureRecognizer.addTarget(self, action: "onPan")
-        pinchGestureRecognizer?.addTarget(self, action: "onPinch")
+        panGestureRecognizer.addTarget(self, action: #selector(onPan))
+        pinchGestureRecognizer?.addTarget(self, action: #selector(onPinch))
     }
     
-    override func drawRect(rect: CGRect) {
+    override func draw(_ rect: CGRect) {
         
-        let context : CGContextRef = UIGraphicsGetCurrentContext()!
+        let context : CGContext = UIGraphicsGetCurrentContext()!
         backgroundColor?.setFill()
-        CGContextFillRect(context, rect)
+        context.fill(rect)
         
         let phase : CGFloat = 10.0
 
@@ -47,54 +47,62 @@ class GridScrollView : UIScrollView, UIScrollViewDelegate {
         
         let scaleFactor1 = zoomScale / pow(zoomConstraint,floor(logC(zoomScale, forBase: zoomConstraint)))
         let scaleFactor2 = (zoomScale * phase) / pow(zoomConstraint, floor(logC((zoomScale * phase), forBase: zoomConstraint)))
-        
+
         let scaledGridPeriod1 = gridStep * scaleFactor1
         let scaledGridPeriod2 = gridStep * scaleFactor2
-        
-        let color1 = gridColor.colorWithAlphaComponent(sin(CGFloat(M_PI) * (scaleFactor1 / zoomConstraint)))
-        let color2 = gridColor.colorWithAlphaComponent(sin(CGFloat(M_PI) * (scaleFactor2 / zoomConstraint)))
+
+        print(zoomScale, scaleFactor1, scaledGridPeriod1)
+
+        let color1 = gridColor.withAlphaComponent(sin(CGFloat.pi * (scaleFactor1 / zoomConstraint)))
+        let color2 = gridColor.withAlphaComponent(sin(CGFloat.pi * (scaleFactor2 / zoomConstraint)))
         
         drawGridInContext(context, step: scaledGridPeriod1, color: color1)
         drawGridInContext(context, step: scaledGridPeriod2, color: color2)
     }
     
-    func drawGridInContext(context: CGContextRef, step: CGFloat, color: UIColor) {
+    func drawGridInContext(_ context: CGContext, step: CGFloat, color: UIColor) {
         
-        if CGColorGetAlpha(color.CGColor) > alphaTreshold {
+        if color.cgColor.alpha > alphaThreshold {
             
-            let offsetX = max(0.0, (step - (bounds.origin.x % step)))
-            let offsetY = max(0.0, (step - (bounds.origin.y % step)))
+            let offsetX = max(0.0, (step - (bounds.origin.x.truncatingRemainder(dividingBy: step))))
+            let offsetY = max(0.0, (step - (bounds.origin.y.truncatingRemainder(dividingBy: step))))
             let offset = CGPoint(x: offsetX, y: offsetY)
             let origin = CGPoint(x: (bounds.origin.x + offset.x), y: (bounds.origin.y + offset.y))
-            
-            CGContextSaveGState(context)
+
+            context.saveGState()
             color.setFill()
+
+            var x = origin.x
+            repeat {
+                context.fill(CGRect(x: x, y: bounds.origin.y, width: 1, height: bounds.height))
+                x += step
+            } while (x < (origin.x + bounds.width))
+
+            var y = origin.y
+            repeat {
+                context.fill(CGRect(x: bounds.origin.x, y: y, width: bounds.width, height: 1))
+                y += step
+            } while (y < (origin.y + bounds.height))
             
-            for var x = origin.x; x < (origin.x + bounds.width); x += step {
-                CGContextFillRect(context, CGRectMake(x, bounds.origin.y, 1, bounds.height))
-            }
-            
-            for var y = origin.y; y < (origin.y + bounds.height); y += step {
-                CGContextFillRect(context, CGRectMake(bounds.origin.x, y, bounds.width, 1))
-            }
-            
-            CGContextRestoreGState(context)
+            context.restoreGState()
         }
     }
     
     // MARK: - Gesture Recognizers
-    
+
+    @objc
     func onPinch() {
         setNeedsDisplay()
     }
-    
+
+    @objc
     func onPan() {
         setNeedsDisplay()
     }
     
     // MARK: - Utility
     
-    func logC(val: CGFloat, forBase base: CGFloat) -> CGFloat {
+    func logC(_ val: CGFloat, forBase base: CGFloat) -> CGFloat {
         return log(val)/log(base)
     }
 }
