@@ -8,27 +8,11 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIScrollViewDelegate {
+class ViewController: UIViewController {
+    @IBOutlet private var contentView: UIView!
+}
 
-    @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var contentView: UIView!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
-    // MARK: - UIScrollViewDelegate
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        scrollView.setNeedsDisplay()
-    }
-
-    func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        scrollView.setNeedsDisplay()
-    }
-
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        contentView
-    }
+extension ViewController: UIScrollViewDelegate {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? { contentView }
 }
 
