@@ -9,7 +9,17 @@
 import UIKit
 
 class ViewController: UIViewController {
-    @IBOutlet private var contentView: UIView!
+
+    private var contentView: UIView!
+
+    override func loadView() {
+        let scrollView = GridScrollView()
+        scrollView.delegate = self
+        scrollView.maximumZoomScale = 1000
+        contentView = UIView(frame: CGRect(x: 0, y: 0, width: 2000, height: 2000))
+        scrollView.addSubview(contentView)
+        self.view = scrollView
+    }
 }
 
 extension ViewController: UIScrollViewDelegate {
