@@ -28,15 +28,18 @@ extension Array where Element == UIBezierPath {
     }
 }
 
-func rects(_ step: CGFloat, _ bounds: CGRect) -> UIBezierPath {
+func gridPath(_ step: CGFloat, _ bounds: CGRect) -> UIBezierPath {
 
-    let verticals = (0...Int(bounds.width / step))
-        .map { CGPoint(x: (CGFloat($0) + floor(bounds.minX / step) + 1) * step, y: bounds.minY) }
-        .map { ($0, CGPoint(x: $0.x, y: $0.y + bounds.height))}
+    let minX = (floor(bounds.minX / step) + 1) * step
+    let minY = (floor(bounds.minY / step) + 1) * step
 
-    let horizontals = (0...Int(bounds.height / step))
-        .map { CGPoint(x: bounds.minX, y: (CGFloat($0) + floor(bounds.minY / step) + 1) * step) }
-        .map { ($0, CGPoint(x: $0.x + bounds.width, y: $0.y)) }
+    let verticals = stride(from: minX, to: bounds.maxX, by: step)
+        .map { (CGPoint(x: $0, y: bounds.minY),
+                CGPoint(x: $0, y: bounds.maxY)) }
+
+    let horizontals = stride(from: minY, to: bounds.maxY, by: step)
+        .map { (CGPoint(x: bounds.minX, y: $0),
+                CGPoint(x: bounds.maxX, y: $0)) }
 
     return (verticals + horizontals)
             .map(UIBezierPath.init(lineFrom:to:))
@@ -60,7 +63,7 @@ class GridScrollView: UIScrollView {
         let alpha = sin(.pi * (gridScale / pow(period, 2)))
         guard alpha > minOpacity else { return }
         gridColor.withAlphaComponent(alpha).setStroke()
-        let path = rects(gridScale * gridStep, bounds)
+        let path = gridPath(gridScale * gridStep, bounds)
         path.lineWidth = lineWidth
         context.addPath(path.cgPath)
         context.strokePath()
