@@ -48,32 +48,70 @@ func gridPath(_ step: CGFloat, _ bounds: CGRect) -> UIBezierPath {
 
 class GridScrollView: UIScrollView {
     
-    var gridColor: UIColor = .white
-    var lineWidth: CGFloat = 1
+    var gridColor: UIColor = .white {
+        didSet {
+            shapeLayer1.strokeColor = gridColor.cgColor
+            shapeLayer2.strokeColor = gridColor.cgColor
+        }
+    }
+
+    var lineWidth: CGFloat = 1 {
+        didSet {
+            shapeLayer1.lineWidth = lineWidth
+            shapeLayer2.lineWidth = lineWidth
+        }
+    }
+
     var gridStep: CGFloat = 4
     var period: CGFloat = 10
     var minOpacity: CGFloat = 0.05
 
     override var bounds: CGRect {
-        didSet { setNeedsDisplay() }
+        didSet { updateGrid() }
     }
 
-    private func drawGrid(in context: CGContext, zoomScaleDelta: CGFloat) {
+    private lazy var shapeLayer1 = makeShapeLayer()
+    private lazy var shapeLayer2 = makeShapeLayer()
+
+    private func makeShapeLayer() -> CAShapeLayer {
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.fillColor = nil
+        shapeLayer.strokeColor = gridColor.cgColor
+        shapeLayer.lineWidth = lineWidth
+        return shapeLayer
+    }
+
+    private func updatedGrid(zoomScaleDelta: CGFloat) -> (CGPath, CGColor) {
         let gridScale = zoomScaleDelta * zoomScale / pow(period, floor(log(zoomScale) / log(period)))
         let alpha = sin(.pi * (gridScale / pow(period, 2)))
-        guard alpha > minOpacity else { return }
-        gridColor.withAlphaComponent(alpha).setStroke()
-        let path = gridPath(gridScale * gridStep, bounds)
-        path.lineWidth = lineWidth
-        context.addPath(path.cgPath)
-        context.strokePath()
+        return (gridPath(gridScale * gridStep, bounds).cgPath,
+                gridColor.withAlphaComponent(alpha).cgColor)
     }
 
-    override func draw(_ rect: CGRect) {
-        let context = UIGraphicsGetCurrentContext()!
-        backgroundColor?.setFill()
-        context.fill(rect)
-        drawGrid(in: context, zoomScaleDelta: 1)
-        drawGrid(in: context, zoomScaleDelta: period)
+    private func updateGrid() {
+        (shapeLayer1.path, shapeLayer1.strokeColor) = updatedGrid(zoomScaleDelta: 1)
+        (shapeLayer2.path, shapeLayer2.strokeColor) = updatedGrid(zoomScaleDelta: period)
+        shapeLayer1.removeAllAnimations()
+        shapeLayer2.removeAllAnimations()
+    }
+
+    private func setupLayers() {
+        layer.addSublayer(shapeLayer1)
+        layer.addSublayer(shapeLayer2)
+        updateGrid()
+    }
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupLayers()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setupLayers()
+    }
+
+    override func didMoveToWindow() {
+        updateGrid()
     }
 }
